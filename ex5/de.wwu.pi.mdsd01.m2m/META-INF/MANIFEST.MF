@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: M2m Plug-in
+Bundle-SymbolicName: de.wwu.pi.mdsd01.m2m
+Bundle-Version: 1.0.0
+Bundle-Vendor: 

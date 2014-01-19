@@ -1,0 +1,82 @@
+modeltype CrudDsl uses "http://www.xtext.org/example/mydsl/MyDsl01";
+modeltype umlMM "strict" uses "http://www.eclipse.org/uml2/4.0.0/UML";
+
+transformation CrudToUML(in DSL: CrudDsl, out UML: umlMM);
+
+main() {
+	DSL.rootObjects()[Entity] -> map toClass();
+}
+
+mapping Entity::toClass(): umlMM::Class
+{
+	
+	name = self.name;
+	isAbstract := self._abstract;
+	
+	superClass := self.superType.resolveone(Class);
+	
+	Property += self.properties.map toUmlProperty();
+}
+
+
+
+mapping AttributeType::toPrimitiveType() : PrimitiveType {
+	name := switch
+	{
+		case (AttributeType::String = self) "MyString";
+		case (AttributeType::Integer = self) "MyInteger";
+		case (AttributeType::Date = self) "MyDate";
+	};
+}
+
+mapping CrudDSL::Property::toUmlProperty(): umlMM::Property{
+init{
+	var isAttribute := self.oclIsTypeOf(Attribute);
+	var crudDSLReference := self.oclAsType(Reference);
+	var crudDSLAttribute := self.oclAsType(Attribute);
+} 
+	name := self.name;
+	
+	
+	if(isAttribute = true) then {
+		if(crudDSLAttribute.optional = true) then 
+		{
+			lower := 0;
+		}
+		else
+		{
+			 lower := 1;
+		}
+		endif;
+		
+		upper := 1;
+		type := crudDSLAttribute.type.map toPrimitiveType();
+	}
+	else
+	{
+		Association := crudDSLReference -> map toUmlAssociation();
+		
+		lower := 1;
+		if(crudDSLReference.multiplicity = "[1]") then
+		{
+			upper := 1;
+		}
+		else
+		{
+			upper := *;
+		}
+		endif;
+	}
+	endif;
+}
+
+mapping CrudDSL::Reference::toUmlAssociation(): umlMM::Association{
+	
+	
+}
+
+
+
+
+
+
