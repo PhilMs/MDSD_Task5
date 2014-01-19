@@ -1,0 +1,171 @@
+grammar org.xtext.example.mydsl.MyDsl01 with org.eclipse.xtext.common.Terminals
+
+generate myDsl01 "http://www.xtext.org/example/mydsl/MyDsl01"
+
+
+// Task 1
+Model:
+	entities+=Entity*
+	windows+=Window*
+;
+	
+QualifiedName :
+	ID ('.' ID)*
+;
+//	
+//Entity:
+//	"entity" name=QualifiedName ("extends" superEntity=[Entity])? (abstract="abstract")?
+//	"{"
+//	(properties+=Property)*
+//	"}"
+//;
+//
+//Property:
+//	Attribute | Reference
+//;
+//
+//enum AttributeType :
+//	String='String' |
+//	Integer='Integer' |
+//	Date='Date'
+//;
+//
+//Attribute:
+//	"att" name=ID type=AttributeType (optional="optional")?
+//;
+//
+//enum Cardinality :
+//	One='1' |
+//	Multi='*'
+//;
+//
+//Reference:
+//	"ref" name=ID entity=[Entity] (cardinality=Cardinality)?
+//;
+
+// =============================================
+/* Entity Model */
+// =============================================
+Entity:
+	(abstract?='abstract')? 'entity' name=ID ('extends' superType=[Entity])? '{'
+		properties+=Property*
+	'}'
+;
+
+Property:
+	Attribute | Reference
+;
+
+Attribute:
+	'att' name=ID ':' type=AttributeType (optional?='optional')?
+;
+
+enum AttributeType:
+	String | Integer | Date
+;
+
+Reference:
+	'ref' name=ID ':' type=[Entity] (multiplicity=MultiplicityKind)? ('opposite=' opposite=[Reference])
+;
+
+enum MultiplicityKind:
+	Single='[1]' | //default
+	Multiple='[*]'
+;
+
+// =============================================
+/* GUI Model */
+// =============================================
+ 
+Window:
+	(EntryWindow | ListWindow)
+;
+
+ListWindow:
+	'ListWindow'  name=ID 'for' entity=[Entity] ('title' title=STRING)? size=Size
+;
+
+EntryWindow:
+	'EntryWindow' name=ID 'for' entity=[Entity] (('title' title=STRING)? & size=Size) '{'
+		elements+=UIElement*
+	'}'
+;
+
+Size:
+	'size=' '(' width=INT ',' height=INT ')'
+;
+
+Bounds:
+	//{Bounds} helpful to prevent error when changing referenced object within unassigned rule call 
+	{Bounds} 'bounds=' '(' x=INT ',' y=INT ',' width=INT ',' height=INT ')'
+;
+
+UIElement:
+	(Label | Field | Button) bounds=Bounds
+;
+
+Label:
+	'Label' name=ID ('(' (text=STRING)? ')')?
+;
+
+Field:
+	'Field' name=ID 'for' property=[Property]
+;
+
+Button:
+	'Button' name=ID (kind=ButtonKind)? ('(' (text=STRING)? ')')?
+;
+
+enum ButtonKind:
+	createEdit | // default
+	delete |
+	cancel
+;
+
+
+/* our GUI Model
+Window:
+	ListWindow | EntryWindow
+;
+
+ListWindow:
+	"listwindow" name=QualifiedName "for" entity=[Entity]
+	"{"
+		("height" height=INT)
+		("width" width=INT)
+		("title" title=STRING)?
+	"}"
+;
+
+EntryWindow:
+	"entrywindow" name=QualifiedName "for" entity=[Entity]
+	"{"
+		("height" height=INT)
+		("width" width=INT)
+		("title" title=STRING)?
+		(elements+=Element)*
+	"}"
+;
+
+Element:
+	(Label | Field | Button) "height" height=INT "width" width=INT "x" x=INT "y" y=INT	
+;
+
+Label:
+	"label" name=ID ("text" text=STRING)? 
+;
+
+Field:
+	"field" property=[Property]
+;
+
+enum InscriptionType :
+	CreateEdit='CreateEdit' | 
+	Delete='Delete' |
+	Cancel='Cancel'
+;
+
+Button:
+	"button" type=InscriptionType
+;
+* */

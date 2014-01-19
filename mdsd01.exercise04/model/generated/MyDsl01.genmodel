@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/mdsd01.exercise04/src-gen" editDirectory="/mdsd01.exercise04.edit/src"
+    editorDirectory="/mdsd01.exercise04.editor/src" modelPluginID="mdsd01.exercise04"
+    forceOverwrite="true" modelName="MyDsl01" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    complianceLevel="5.0" copyrightFields="false" editPluginID="mdsd01.exercise04.edit"
+    editorPluginID="mdsd01.exercise04.editor" runtimeVersion="2.9">
+  <genPackages prefix="MyDsl01" basePackage="org.xtext.example.mydsl" disposableProviderFactory="true"
+      fileExtensions="01dsl" ecorePackage="MyDsl01.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="MyDsl01.ecore#//AttributeType">
+      <genEnumLiterals ecoreEnumLiteral="MyDsl01.ecore#//AttributeType/String"/>
+      <genEnumLiterals ecoreEnumLiteral="MyDsl01.ecore#//AttributeType/Integer"/>
+      <genEnumLiterals ecoreEnumLiteral="MyDsl01.ecore#//AttributeType/Date"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="MyDsl01.ecore#//MultiplicityKind">
+      <genEnumLiterals ecoreEnumLiteral="MyDsl01.ecore#//MultiplicityKind/Single"/>
+      <genEnumLiterals ecoreEnumLiteral="MyDsl01.ecore#//MultiplicityKind/Multiple"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="MyDsl01.ecore#//ButtonKind">
+      <genEnumLiterals ecoreEnumLiteral="MyDsl01.ecore#//ButtonKind/createEdit"/>
+      <genEnumLiterals ecoreEnumLiteral="MyDsl01.ecore#//ButtonKind/delete"/>
+      <genEnumLiterals ecoreEnumLiteral="MyDsl01.ecore#//ButtonKind/cancel"/>
+    </genEnums>
+    <genClasses ecoreClass="MyDsl01.ecore#//Model">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MyDsl01.ecore#//Model/entities"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MyDsl01.ecore#//Model/windows"/>
+    </genClasses>
+    <genClasses ecoreClass="MyDsl01.ecore#//Entity">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MyDsl01.ecore#//Entity/abstract"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MyDsl01.ecore#//Entity/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MyDsl01.ecore#//Entity/superType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MyDsl01.ecore#//Entity/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="MyDsl01.ecore#//Property">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MyDsl01.ecore#//Property/name"/>
+    </genClasses>
+    <genClasses ecoreClass="MyDsl01.ecore#//Attribute">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MyDsl01.ecore#//Attribute/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MyDsl01.ecore#//Attribute/optional"/>
+    </genClasses>
+    <genClasses ecoreClass="MyDsl01.ecore#//Reference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MyDsl01.ecore#//Reference/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MyDsl01.ecore#//Reference/multiplicity"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MyDsl01.ecore#//Reference/opposite"/>
+    </genClasses>
+    <genClasses ecoreClass="MyDsl01.ecore#//Window">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MyDsl01.ecore#//Window/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MyDsl01.ecore#//Window/entity"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MyDsl01.ecore#//Window/title"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MyDsl01.ecore#//Window/size"/>
+    </genClasses>
+    <genClasses ecoreClass="MyDsl01.ecore#//ListWindow"/>
+    <genClasses ecoreClass="MyDsl01.ecore#//EntryWindow">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MyDsl01.ecore#//EntryWindow/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="MyDsl01.ecore#//Size">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MyDsl01.ecore#//Size/width"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MyDsl01.ecore#//Size/height"/>
+    </genClasses>
+    <genClasses ecoreClass="MyDsl01.ecore#//Bounds">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MyDsl01.ecore#//Bounds/x"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MyDsl01.ecore#//Bounds/y"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MyDsl01.ecore#//Bounds/width"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MyDsl01.ecore#//Bounds/height"/>
+    </genClasses>
+    <genClasses ecoreClass="MyDsl01.ecore#//UIElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MyDsl01.ecore#//UIElement/bounds"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MyDsl01.ecore#//UIElement/name"/>
+    </genClasses>
+    <genClasses ecoreClass="MyDsl01.ecore#//Label">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MyDsl01.ecore#//Label/text"/>
+    </genClasses>
+    <genClasses ecoreClass="MyDsl01.ecore#//Field">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MyDsl01.ecore#//Field/property"/>
+    </genClasses>
+    <genClasses ecoreClass="MyDsl01.ecore#//Button">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MyDsl01.ecore#//Button/kind"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MyDsl01.ecore#//Button/text"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
