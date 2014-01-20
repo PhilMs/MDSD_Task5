@@ -4,21 +4,27 @@ modeltype umlMM "strict" uses "http://www.eclipse.org/uml2/4.0.0/UML";
 transformation CrudDSLToUML(in DSL: CrudDSL, out UML: umlMM);
 
 main() {
-	DSL.rootObjects()[Entity] -> map toClass();
+	DSL.rootObjects()[Model] -> map toModel();
 }
 
-mapping Entity::toClass(): umlMM::Class
-{
+mapping Model::toModel(): umlMM::Model{
 	
+	packagedElement += self.entities.map toClass();
+}
+
+mapping Entity::toClass(): umlMM::Class{
+
+
 	name = self.name;
 	isAbstract := self._abstract;
 	
-	superClass := self.superType.resolveone(Class);
+	if(self.superType != null)then {
+		superClass := self.superType.late resolveone(umlMM::Class);
+	}
+	endif;
 	
-	Property += self.properties.map toUmlProperty();
+	ownedAttribute += self.properties.map toUmlProperty();
 }
-
-
 
 mapping AttributeType::toPrimitiveType() : PrimitiveType {
 	name := switch
@@ -34,9 +40,9 @@ init{
 	var isAttribute := self.oclIsTypeOf(Attribute);
 	var crudDSLReference := self.oclAsType(Reference);
 	var crudDSLAttribute := self.oclAsType(Attribute);
+	var ownedAssociation := crudDSLReference -> map toUmlAssociation();
 } 
 	name := self.name;
-	
 	
 	if(isAttribute = true) then {
 		if(crudDSLAttribute.optional = true) then 
@@ -50,12 +56,14 @@ init{
 		endif;
 		
 		upper := 1;
+		
 		type := crudDSLAttribute.type.map toPrimitiveType();
 	}
 	else
 	{
-		Association := crudDSLReference -> map toUmlAssociation();
 		
+		association := ownedAssociation.resolveone(Association);
+					
 		lower := 1;
 		if(crudDSLReference.multiplicity = "[1]") then
 		{
@@ -72,7 +80,9 @@ init{
 
 mapping CrudDSL::Reference::toUmlAssociation(): umlMM::Association{
 	
-	
+	name := self.name + "_" + self.opposite.name;
+	result.memberEnd := self.resolveone(umlMM::Property); 
+	result.memberEnd += self.opposite.resolveone(umlMM::Property);
 }
 
 
