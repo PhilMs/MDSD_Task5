@@ -1,4 +1,4 @@
-modeltype CrudDsl uses "http://www.xtext.org/example/mydsl/MyDsl01";
+modeltype CrudDsl uses "http://www.wwu.de/pi/mdsd/crudDsl/CrudDsl";
 modeltype umlMM "strict" uses "http://www.eclipse.org/uml2/4.0.0/UML";
 
 transformation CrudToUML(in DSL: CrudDsl, out UML: umlMM);
@@ -9,13 +9,13 @@ main() {
 
 mapping Entity::toClass(): umlMM::Class
 {
-	
+
 	name = self.name;
 	isAbstract := self._abstract;
 	
 	superClass := self.superType.resolveone(Class);
-	
-	Property += self.properties.map toUmlProperty();
+
+	ownedAttribute += self.properties.map toUmlProperty();
 }
 
 
@@ -29,17 +29,17 @@ mapping AttributeType::toPrimitiveType() : PrimitiveType {
 	};
 }
 
-mapping CrudDSL::Property::toUmlProperty(): umlMM::Property{
+mapping CrudDsl::Property::toUmlProperty(): umlMM::Property{
 init{
 	var isAttribute := self.oclIsTypeOf(Attribute);
-	var crudDSLReference := self.oclAsType(Reference);
-	var crudDSLAttribute := self.oclAsType(Attribute);
+	var crudDslReference := self.oclAsType(Reference);
+	var crudDslAttribute := self.oclAsType(Attribute);
 } 
 	name := self.name;
 	
 	
 	if(isAttribute = true) then {
-		if(crudDSLAttribute.optional = true) then 
+		if(crudDslAttribute.optional = true) then 
 		{
 			lower := 0;
 		}
@@ -50,14 +50,14 @@ init{
 		endif;
 		
 		upper := 1;
-		type := crudDSLAttribute.type.map toPrimitiveType();
+		type := crudDslAttribute.type.map toPrimitiveType();
 	}
 	else
 	{
-		Association := crudDSLReference -> map toUmlAssociation();
+		//Association := crudDslReference -> map toUmlAssociation();
 		
 		lower := 1;
-		if(crudDSLReference.multiplicity = "[1]") then
+		if(crudDslReference.multiplicity = "[1]") then
 		{
 			upper := 1;
 		}
@@ -70,7 +70,7 @@ init{
 	endif;
 }
 
-mapping CrudDSL::Reference::toUmlAssociation(): umlMM::Association{
+mapping CrudDsl::Reference::toUmlAssociation(): umlMM::Association{
 	
 	
 }
